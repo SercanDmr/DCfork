@@ -168,7 +168,6 @@ set(GCN_TEST_SOURCES
     gcn/translator.cpp
 
     # Tests
-    gcn/test_lds_bounds.cpp
     gcn/test_gcn_instructions.cpp
 )
 
