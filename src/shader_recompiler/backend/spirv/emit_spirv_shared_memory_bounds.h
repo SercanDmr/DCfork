@@ -3,11 +3,23 @@
 
 #pragma once
 
+#include <atomic>
 #include <utility>
 
+#include "common/logging/log.h"
 #include "shader_recompiler/backend/spirv/spirv_emit_context.h"
 
 namespace Shader::Backend::SPIRV {
+
+inline void LogSharedMemoryBoundsEnabled(const EmitContext& ctx) {
+    static std::atomic_flag logged = ATOMIC_FLAG_INIT;
+    if (!logged.test_and_set(std::memory_order_relaxed)) {
+        LOG_WARNING(Render_Recompiler,
+                    "LDS bounds restoration active: out-of-range reads return zero and "
+                    "writes/atomics are discarded (first shader {:#x}, LDS size {} bytes)",
+                    ctx.info.pgm_hash, ctx.runtime_info.hw.cs.shared_memory_size);
+    }
+}
 
 inline Id SharedMemoryAccessInBounds(EmitContext& ctx, Id byte_offset, u32 allocation_size,
                                      u32 access_size) {
@@ -22,6 +34,7 @@ inline Id SharedMemoryAccessInBounds(EmitContext& ctx, Id byte_offset, u32 alloc
 template <typename Emit>
 Id EmitCheckedSharedResult(EmitContext& ctx, Id byte_offset, u32 allocation_size, u32 access_size,
                            Id result_type, Id zero_value, Emit&& emit) {
+    LogSharedMemoryBoundsEnabled(ctx);
     const Id in_bounds = SharedMemoryAccessInBounds(ctx, byte_offset, allocation_size, access_size);
     const Id access_label = ctx.OpLabel();
     const Id merge_label = ctx.OpLabel();
@@ -43,6 +56,7 @@ Id EmitCheckedSharedResult(EmitContext& ctx, Id byte_offset, u32 allocation_size
 template <typename Emit>
 void EmitCheckedSharedWrite(EmitContext& ctx, Id byte_offset, u32 allocation_size, u32 access_size,
                             Emit&& emit) {
+    LogSharedMemoryBoundsEnabled(ctx);
     const Id in_bounds = SharedMemoryAccessInBounds(ctx, byte_offset, allocation_size, access_size);
     const Id access_label = ctx.OpLabel();
     const Id merge_label = ctx.OpLabel();
