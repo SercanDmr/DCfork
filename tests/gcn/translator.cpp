@@ -81,7 +81,7 @@ std::vector<u32> TranslateToSpirv(std::span<const u64> raw_gcn_insts, u32 shared
     runtime_info.Initialize(HwStage::Compute, SwStage::Compute);
     runtime_info.props.num_user_data = 4;
     runtime_info.hw.cs.workgroup_size = {1, 1, 1};
-    runtime_info.cs_info.shared_memory_size = shared_memory_size;
+    runtime_info.hw.cs.shared_memory_size = shared_memory_size;
 
     Gcn::Translator translator(program.info, runtime_info, profile);
     translator.EmitPrologue(block);
