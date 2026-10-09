@@ -792,8 +792,8 @@ struct AddressSpace::Impl {
 
     VAddr Unmap(VAddr virtual_addr, u64* size) {
         ASSERT_MSG(size != nullptr && *size > 0, "Invalid unmap size");
-        
-                int map_flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED;
+
+        int map_flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED;
 #if !defined(__FreeBSD__)
         map_flags |= MAP_NORESERVE;
 #endif
