@@ -8,4 +8,4 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 # License
 
-- [**GPL-2.0 license**](https://github.com/shadps4-emu/shadPS4/blob/main/LICENSE)
+[**GPL-2.0 license**](https://github.com/shadps4-emu/shadPS4/blob/main/LICENSE)
