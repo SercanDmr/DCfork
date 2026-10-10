@@ -2,7 +2,8 @@
 SPDX-FileCopyrightText: 2026 shadPS4 Emulator Project
 SPDX-License-Identifier: GPL-2.0-or-later
 -->
-**Steam Deck Gameplay**
+# Steam Deck Gameplay
+
 [https://www.youtube.com/watch?v=OB12Cdv5-Hs](https://www.youtube.com/watch?v=OB12Cdv5-Hs)
 
 # License
